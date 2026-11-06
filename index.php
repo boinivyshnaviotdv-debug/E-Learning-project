@@ -1,0 +1,10 @@
+<?php
+require __DIR__ . '/config.php';
+$courses = $pdo->query("SELECT id, title, description, instructor FROM courses ORDER BY created_at DESC")->fetchAll();
+?>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LearnHub | E-Learning</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="topbar"><a class="brand" href="index.php">LearnHub</a><nav><a href="#courses">Courses</a><?php if (logged_in()): ?><a href="dashboard.php">Dashboard</a><a href="logout.php">Logout</a><?php else: ?><a href="login.php">Login</a><a class="navbtn" href="register.php">Join Now</a><?php endif; ?></nav></header>
+<main><section class="hero"><div><span class="eyebrow">LEARN • GROW • SUCCEED</span><h1>Build skills for<br><em>your future.</em></h1><p>Explore practical courses, learn at your own pace and keep your progress in one place.</p><a class="btn" href="#courses">Explore courses</a></div><div class="hero-card"><div class="play">▶</div><h3>Learning starts here</h3><p>Simple lessons. Useful skills. Real progress.</p><div class="progress"><span></span></div><small>YOUR LEARNING JOURNEY</small></div></section>
+<section id="courses" class="section"><div class="section-head"><div><span class="eyebrow">OUR LIBRARY</span><h2>Popular courses</h2></div><p>Choose a course and start learning.</p></div><div class="course-grid">
+<?php foreach ($courses as $course): ?><article class="course"><div class="course-art"><span>LEARNHUB</span><b><?= strtoupper(substr($course['title'],0,2)) ?></b></div><div class="course-body"><h3><?= h($course['title']) ?></h3><p><?= h($course['description']) ?></p><small>Instructor: <?= h($course['instructor']) ?></small><a class="text-link" href="<?= logged_in() ? 'enroll.php?id='.(int)$course['id'] : 'login.php' ?>">View / Enroll →</a></div></article><?php endforeach; ?>
+</div></section></main><footer>© <?= date('Y') ?> LearnHub · E-Learning Management System</footer></body></html>
